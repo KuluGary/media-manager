@@ -1,5 +1,5 @@
-import { config } from "dotenv";
-config(); // ensure env vars load
+import dotenv from 'dotenv';
+dotenv.config();
 
 import type { Config } from "drizzle-kit";
 

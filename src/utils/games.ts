@@ -1,4 +1,4 @@
-import type { GamesList } from "@/libs/htlb/HLTBgamesList.types";
+import type { GamesList } from "@/types/HowLongToBeat";
 import { v4 as uuidv4 } from "uuid";
 
 export const mapHLTBToDB = (g: GamesList, status: string) => ({

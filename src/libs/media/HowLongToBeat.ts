@@ -1,15 +1,15 @@
 import { env } from "@/config/env";
-import type { HTLBGameList } from "./HLTBgamesList.types";
+import type { HTLBGameList } from "../../types/HowLongToBeat";
 
 type ListType = "playing" | "backlog" | "custom" | "custom2" | "completed" | "retired";
 
-export default class HLTB {
+export default class HowLongToBeat {
   endpoints = {
     gamesList: `https://howlongtobeat.com/api/user/:userId/games/list`,
   };
   lists: ListType[] = ["playing", "backlog", "custom", "custom2", "completed", "retired"];
 
-  constructor() {}
+  constructor() { }
 
   async getGameList(list: ListType): Promise<HTLBGameList | undefined> {
     try {

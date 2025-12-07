@@ -1,5 +1,6 @@
-import "dotenv/config";
 import { z } from "zod";
+import dotenv from "dotenv";
+dotenv.config();
 
 console.log("🔐 Loading environment variables...");
 
@@ -17,6 +18,13 @@ const serverSchema = z.object({
   // HLTB
   HLTB_USER: z.string().min(1),
   HLTB_USER_ID: z.string().min(1),
+
+  // MANGADEX
+  MANGADEX_FOLLOWS_LIST_ID: z.string().min(1),
+  MANGADEX_USERNAME: z.string().min(1),
+  MANGADEX_PASSWORD: z.string().min(1),
+  MANGADEX_CLIENT_ID: z.string().min(1),
+  MANGADEX_CLIENT_SECRET: z.string().min(1),
 });
 
 const _serverEnv = serverSchema.safeParse(process.env);
@@ -29,8 +37,20 @@ if (!_serverEnv.success) {
   throw new Error("Invalid environment variables");
 }
 
-const { NODE_ENV, DATABASE_URL, SUPABASE_SERVICE_ROLE, SUPABASE_URL, SENTRY_DSN, HLTB_USER, HLTB_USER_ID } =
-  _serverEnv.data;
+const {
+  NODE_ENV,
+  DATABASE_URL,
+  SUPABASE_SERVICE_ROLE,
+  SUPABASE_URL,
+  SENTRY_DSN,
+  HLTB_USER,
+  HLTB_USER_ID,
+  MANGADEX_CLIENT_ID,
+  MANGADEX_CLIENT_SECRET,
+  MANGADEX_FOLLOWS_LIST_ID,
+  MANGADEX_PASSWORD,
+  MANGADEX_USERNAME,
+} = _serverEnv.data;
 
 export const env = {
   NODE_ENV,
@@ -40,5 +60,10 @@ export const env = {
   SENTRY_DSN,
   HLTB_USER,
   HLTB_USER_ID,
+  MANGADEX_CLIENT_ID,
+  MANGADEX_CLIENT_SECRET,
+  MANGADEX_FOLLOWS_LIST_ID,
+  MANGADEX_PASSWORD,
+  MANGADEX_USERNAME,
 };
 console.log("✅ Environment variables loaded");

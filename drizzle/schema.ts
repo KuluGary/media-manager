@@ -10,6 +10,7 @@ export const oauth_client_type = pgEnum("oauth_client_type", ['public', 'confide
 export const oauth_registration_type = pgEnum("oauth_registration_type", ['dynamic', 'manual'])
 export const oauth_response_type = pgEnum("oauth_response_type", ['code'])
 export const one_time_token_type = pgEnum("one_time_token_type", ['confirmation_token', 'reauthentication_token', 'recovery_token', 'email_change_token_new', 'email_change_token_current', 'phone_change_token'])
+export const request_status = pgEnum("request_status", ['PENDING', 'SUCCESS', 'ERROR'])
 export const action = pgEnum("action", ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'ERROR'])
 export const equality_op = pgEnum("equality_op", ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in'])
 export const buckettype = pgEnum("buckettype", ['STANDARD', 'ANALYTICS', 'VECTOR'])
@@ -46,4 +47,22 @@ export const users = pgTable("users", {
 	email: text("email"),
 	created_at: timestamp("created_at", { mode: 'string' }).defaultNow().notNull(),
 	updated_at: timestamp("updated_at", { mode: 'string' }).defaultNow().notNull(),
+});
+
+export const manga = pgTable("manga", {
+	created_at: timestamp("created_at", { withTimezone: true, mode: 'string' }).defaultNow().notNull(),
+	title: text("title").notNull(),
+	mangaId: text("mangaId").notNull(),
+	genres: text("genres").array().notNull(),
+	author: text("author"),
+	rating: text("rating"),
+	link: text("link"),
+	updatedAt: timestamp("updatedAt", { mode: 'string' }),
+	id: uuid("id").defaultRandom(),
+	status: text("status").notNull(),
+},
+(table) => {
+	return {
+		manga_mangaId_key: unique("manga_mangaId_key").on(table.mangaId),
+	}
 });

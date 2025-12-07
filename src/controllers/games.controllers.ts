@@ -1,6 +1,6 @@
 import { db } from "@/libs/database/db";
 import { games } from "@/libs/database/schema";
-import HLTB from "@/libs/htlb/gamesList";
+import HowLongToBeat from "@/libs/media/HowLongToBeat";
 import { mapHLTBToDB } from "@/utils/games";
 import { eq } from "drizzle-orm";
 
@@ -17,7 +17,7 @@ export const getGamesByStatus = async (status: string) => {
 };
 
 export const syncGamesFromHLTB = async () => {
-  const hltb = new HLTB();
+  const hltb = new HowLongToBeat();
 
   const hltbResponses = await Promise.all(
     hltb.lists.map(async (listType) => ({
