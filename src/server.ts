@@ -1,6 +1,5 @@
 import { serve } from "@hono/node-server";
 import { showRoutes } from "hono/dev";
-import { notFound } from "stoker/middlewares";
 
 import app from "./app";
 
@@ -12,7 +11,5 @@ serve({
   fetch: app.fetch,
   port,
 });
-
-app.notFound(notFound);
 
 showRoutes(app);

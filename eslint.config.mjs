@@ -9,7 +9,7 @@ export default antfu({
     semi: true,
     quotes: "double",
   },
-  ignores: ["**/migrations/*", "drizzle/**"],
+  ignores: ["**/migrations/*", "*.sql", "**/meta/*"],
 }, {
   rules: {
     "no-console": ["warn"],

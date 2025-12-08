@@ -1,17 +1,25 @@
-import { Hono } from "hono";
+import games from "@/routes/games/games.index";
+import manga from "@/routes/manga/manga.index";
 
-import errorHandler from "@/middleware/error.middleware";
-import authRoutes from "@/routes/auth.routes";
+import createApp from "./libs/hono/create-app";
+import configureOpenApi from "./libs/open-api/configure-open-api";
 
-import gamesRoutes from "./routes/games.routes";
-import mangaRoutes from "./routes/manga.routes";
+const app = createApp();
 
-const app = new Hono()
-  .basePath("/api")
-  .route("/auth", authRoutes)
-  .route("/games", gamesRoutes)
-  .route("/manga", mangaRoutes)
-  .onError(errorHandler);
+const routes = [
+  games,
+  manga,
+];
+
+configureOpenApi(app);
+
+app.basePath("/api");
+
+configureOpenApi(app);
+
+routes.forEach((route) => {
+  app.route("/", route);
+});
 
 export type AppType = typeof app;
 
