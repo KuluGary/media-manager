@@ -1,4 +1,4 @@
-import { numeric, pgTable, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
+import { bigint, numeric, pgTable, text, timestamp, unique, uuid } from "drizzle-orm/pg-core";
 
 export const games = pgTable("games", {
   id: uuid().defaultRandom().primaryKey().notNull(),
@@ -30,8 +30,26 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at", { mode: "string" }).defaultNow().notNull(),
 });
 
+export const videos = pgTable("videos", {
+  // You can use { mode: "bigint" } if numbers are exceeding js number limitations
+  id: bigint({ mode: "number" }).primaryKey().generatedByDefaultAsIdentity({ name: "videos_id_seq", startWith: 1, increment: 1, minValue: 1, maxValue: 9223372036854775807, cache: 1 }),
+  createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
+  videoId: text().notNull(),
+  title: text(),
+  description: text(),
+  link: text(),
+  author: text(),
+  channel: text(),
+  rating: text(),
+  views: text(),
+  duration: text(),
+  tags: text().array(),
+}, table => [
+  unique("videos_videoId_key").on(table.videoId),
+]);
+
 export const manga = pgTable("manga", {
-  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).defaultNow().notNull(),
+  createdAt: timestamp({ withTimezone: true, mode: "string" }).defaultNow().notNull(),
   title: text().notNull(),
   mangaId: text().notNull(),
   genres: text().array().notNull(),

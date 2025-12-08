@@ -27,6 +27,10 @@ const serverSchema = z.object({
   MANGADEX_PASSWORD: z.string().min(1),
   MANGADEX_CLIENT_ID: z.string().min(1),
   MANGADEX_CLIENT_SECRET: z.string().min(1),
+
+  // YOUTUBE
+  YOUTUBE_PLAYLIST_ID: z.string().min(1),
+  YOUTUBE_API_KEY: z.string().min(1),
 });
 
 // eslint-disable-next-line node/no-process-env
@@ -53,6 +57,8 @@ const {
   MANGADEX_FOLLOWS_LIST_ID,
   MANGADEX_PASSWORD,
   MANGADEX_USERNAME,
+  YOUTUBE_PLAYLIST_ID,
+  YOUTUBE_API_KEY,
 } = _serverEnv.data;
 
 export const env = {
@@ -68,6 +74,8 @@ export const env = {
   MANGADEX_FOLLOWS_LIST_ID,
   MANGADEX_PASSWORD,
   MANGADEX_USERNAME,
+  YOUTUBE_PLAYLIST_ID,
+  YOUTUBE_API_KEY,
 };
 // eslint-disable-next-line no-console
 console.log("✅ Environment variables loaded");
