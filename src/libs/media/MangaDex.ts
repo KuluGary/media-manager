@@ -36,10 +36,6 @@ export default class MangaDex {
 		);
 	}
 
-	/* ---------------------------------------------------------------------- */
-	/* Authentication                                                         */
-	/* ---------------------------------------------------------------------- */
-
 	async authenticate(): Promise<void> {
 		const credentials = {
 			grant_type: "password",
@@ -66,10 +62,6 @@ export default class MangaDex {
 		};
 	}
 
-	/* ---------------------------------------------------------------------- */
-	/* Main Aggregated Manga List (ARRAY w/ status)                           */
-	/* ---------------------------------------------------------------------- */
-
 	async getManga(): Promise<MangaWithStatus[]> {
 		const [followList, statusMap, favouriteList] = await Promise.all([
 			this.getMangaFollows(),
@@ -79,13 +71,11 @@ export default class MangaDex {
 
 		const results: MangaWithStatus[] = [];
 
-		// Fetch full manga info in parallel
 		const [followManga, favouriteManga] = await Promise.all([
 			this.getMangaDetails(followList.map(m => ({ id: m.id, type: "manga" }))),
 			this.getMangaDetails(favouriteList.data.relationships)
 		]);
 
-		// Followed manga with reading statuses
 		for (const manga of followManga) {
 			const status = statusMap.statuses[manga.id];
 			if (!status) continue;
@@ -94,7 +84,6 @@ export default class MangaDex {
 			results.push({ ...formatted, status });
 		}
 
-		// Favourites
 		for (const manga of favouriteManga) {
 			const formatted = await this.formatManga(manga);
 			results.push({ ...formatted, status: "favourite" });
@@ -102,10 +91,6 @@ export default class MangaDex {
 
 		return results;
 	}
-
-	/* ---------------------------------------------------------------------- */
-	/* Fetch helpers                                                          */
-	/* ---------------------------------------------------------------------- */
 
 	private async getMangaList(): Promise<MangaDexList> {
 		const response = await fetch(this.endpoints.MANGA_LIST, {
@@ -148,10 +133,6 @@ export default class MangaDex {
 		return response.json() as Promise<MangaDexStatuses>;
 	}
 
-	/* ---------------------------------------------------------------------- */
-	/* High-performance manga detail fetch (batch 100 + parallel)             */
-	/* ---------------------------------------------------------------------- */
-
 	private async getMangaDetails(
 		mangaRefs: { id: string; type: string }[]
 	): Promise<MangaDexManga[]> {
@@ -190,15 +171,10 @@ export default class MangaDex {
 		return chunks;
 	}
 
-	/* ---------------------------------------------------------------------- */
-	/* NO MORE CHAPTER FETCHING — all data is included in manga response      */
-	/* ---------------------------------------------------------------------- */
-
 	private async formatManga(manga: MangaDexManga): Promise<FormattedManga> {
 		const id = manga.id;
 		const title = manga.attributes?.title.en || "Untitled";
 
-		// Latest chapter already included because includes[]=chapter
 		const chapterRel = manga.relationships.find(r => r.type === "chapter");
 
 		const updatedAt =
