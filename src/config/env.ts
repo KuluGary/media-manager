@@ -1,7 +1,9 @@
-import { z } from "zod";
 import dotenv from "dotenv";
+import { z } from "zod";
+
 dotenv.config();
 
+// eslint-disable-next-line no-console
 console.log("🔐 Loading environment variables...");
 
 const serverSchema = z.object({
@@ -27,6 +29,7 @@ const serverSchema = z.object({
   MANGADEX_CLIENT_SECRET: z.string().min(1),
 });
 
+// eslint-disable-next-line node/no-process-env
 const _serverEnv = serverSchema.safeParse(process.env);
 
 if (!_serverEnv.success) {
@@ -66,4 +69,5 @@ export const env = {
   MANGADEX_PASSWORD,
   MANGADEX_USERNAME,
 };
+// eslint-disable-next-line no-console
 console.log("✅ Environment variables loaded");

@@ -1,13 +1,13 @@
-import { supabase } from "@/libs/supabase/client";
-import { zValidator } from "@/middleware/zodValidator.middleware";
-
-import { db } from "@/libs/database/db";
-import { users } from "@/libs/database/schema";
 import { Hono } from "hono";
 import { getCookie, setCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
 import { endTime, startTime } from "hono/timing";
 import { z } from "zod";
+
+import { db } from "@/libs/database/db";
+import { users } from "@/libs/database/schema";
+import { supabase } from "@/libs/supabase/client";
+import { zValidator } from "@/middleware/zod-validator.middleware";
 
 const authRoutes = new Hono()
   .post(
@@ -17,7 +17,7 @@ const authRoutes = new Hono()
       z.object({
         email: z.string(),
         password: z.string().min(8),
-      })
+      }),
     ),
     async (c) => {
       const { email, password } = c.req.valid("json");
@@ -28,7 +28,7 @@ const authRoutes = new Hono()
       });
 
       if (error || !data?.user?.email) {
-        console.log(error);
+        console.error(error);
         throw new Error(error?.message || "Error while signing up", {
           cause: error,
         });
@@ -44,7 +44,7 @@ const authRoutes = new Hono()
       const user = await db.insert(users).values(dbUser).returning();
 
       return c.json(user);
-    }
+    },
   )
   .post(
     "/sign-in",
@@ -53,7 +53,7 @@ const authRoutes = new Hono()
       z.object({
         email: z.string(),
         password: z.string().min(8),
-      })
+      }),
     ),
     async (c) => {
       const { email, password } = c.req.valid("json");
@@ -80,7 +80,7 @@ const authRoutes = new Hono()
       });
 
       return c.json(data.user);
-    }
+    },
   )
   .post(
     "/sign-in-with-provider",
@@ -90,7 +90,7 @@ const authRoutes = new Hono()
         provider: z.enum(["google", "apple"]),
         token: z.string().min(8),
         accessToken: z.string().optional(),
-      })
+      }),
     ),
     async (c) => {
       const { token, provider, accessToken } = c.req.valid("json");
@@ -124,7 +124,7 @@ const authRoutes = new Hono()
       });
 
       return c.json(data.user);
-    }
+    },
   )
   .get("/refresh", async (c) => {
     const refresh_token = getCookie(c, "refresh_token");

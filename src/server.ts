@@ -5,7 +5,7 @@ import { notFound } from "stoker/middlewares";
 import app from "./app";
 
 const port = 3000;
-// @
+// eslint-disable-next-line no-console
 console.log(`Server is running on port - ${port}`);
 
 serve({

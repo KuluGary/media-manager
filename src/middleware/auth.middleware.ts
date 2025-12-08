@@ -1,6 +1,8 @@
-import { type MiddlewareHandler } from "hono";
+import type { MiddlewareHandler } from "hono";
+
 import { getCookie } from "hono/cookie";
 import { HTTPException } from "hono/http-exception";
+
 import { supabase } from "@/libs/supabase/client";
 
 const authMiddleware: MiddlewareHandler = async (c, next) => {
@@ -16,7 +18,7 @@ const authMiddleware: MiddlewareHandler = async (c, next) => {
       updated_at: data.user.updated_at,
     });
   }
-  //TODO: handle error properly
+  // TODO: handle error properly
   if (error) {
     console.error("Error while getting user by access_token ", error);
     if (!refresh_token) {

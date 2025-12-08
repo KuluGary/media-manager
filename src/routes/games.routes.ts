@@ -1,5 +1,6 @@
-import { getAllGames, getGamesByStatus, syncGamesFromHLTB } from "@/controllers/games.controllers";
 import { Hono } from "hono";
+
+import { getAllGames, getGamesByStatus, syncGamesFromHLTB } from "@/controllers/games.controllers";
 
 const gamesRoutes = new Hono()
   .get("/", async (c) => {

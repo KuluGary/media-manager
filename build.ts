@@ -1,5 +1,6 @@
-import { build } from "esbuild";
 import type { BuildOptions } from "esbuild";
+
+import { build } from "esbuild";
 
 const options = {
   bundle: true,
@@ -14,13 +15,14 @@ const options = {
   logLevel: "info",
 } satisfies BuildOptions;
 
-const buildApp = async () => {
+async function buildApp() {
   try {
     await build(options);
-  } catch (error) {
-    console.log(error);
+  }
+  catch (error) {
+    console.error(error);
     process.exit(1);
   }
-};
+}
 
 await buildApp();
