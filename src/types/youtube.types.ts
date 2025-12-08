@@ -74,12 +74,8 @@ export interface YoutubeVideo {
     caption: string;
     licensedContent: boolean;
     regionRestriction: {
-      allowed: [
-        string,
-      ];
-      blocked: [
-        string,
-      ];
+      allowed: string[];
+      blocked: string[];
     };
     contentRating: {
       acbRating: string;
